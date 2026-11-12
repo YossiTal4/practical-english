@@ -47,9 +47,9 @@ const sandbox = {
 vm.createContext(sandbox);
 sandbox.window = sandbox;
 sandbox.addEventListener = () => {};
-['words.js', 'sentences.js', 'sentences-extra.js', 'examples.js', 'career.js', 'career-notes.js',
-    'career-mistakes.js', 'career-extra.js', 'reading.js', 'grammar.js', 'grammar-more.js',
-    'placement-bank.js', 'categories-words.js', 'categories-more.js', 'reading-words.js', 'i18n.js', 'app.js'].forEach((f) => vm.runInContext(read(f), sandbox, { filename: f }));
+['js/data/words.js', 'js/data/sentences.js', 'js/data/sentences-extra.js', 'js/data/examples.js', 'js/data/career.js', 'js/data/career-notes.js',
+    'js/data/career-mistakes.js', 'js/data/career-extra.js', 'js/data/reading.js', 'js/data/grammar.js', 'js/data/grammar-more.js',
+    'js/data/placement-bank.js', 'js/data/categories-words.js', 'js/data/categories-more.js', 'js/data/reading-words.js', 'js/i18n.js', 'js/app.js'].forEach((f) => vm.runInContext(read(f), sandbox, { filename: f }));
 
 // Presses the draw button, starts the test and reads all 40 questions (text and section label)
 function drawTest() {
@@ -66,7 +66,7 @@ function drawTest() {
 }
 
 // The band (A, B or C) of every question in the pool, by the text the test shows
-const bank = vm.runInNewContext(read('placement-bank.js') + ';PLACEMENT_BANK');
+const bank = vm.runInNewContext(read('js/data/placement-bank.js') + ';PLACEMENT_BANK');
 const bandOf = {};
 bank.vocab.forEach((v) => { bandOf[v.en] = v.band; });
 [bank.grammar, bank.completion].forEach((list) => list.forEach((x) => { bandOf[x.q] = x.band; }));

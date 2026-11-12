@@ -63,9 +63,9 @@ vm.createContext(sandbox);
 // In a browser window is the global object; the scripts publish window.tr, so the sandbox plays that role
 sandbox.window = sandbox;
 sandbox.addEventListener = () => {};
-['words.js', 'sentences.js', 'sentences-extra.js', 'examples.js', 'career.js', 'career-notes.js',
-    'career-mistakes.js', 'career-extra.js', 'reading.js', 'grammar.js', 'grammar-more.js',
-    'placement-bank.js', 'categories-words.js', 'categories-more.js', 'reading-words.js', 'i18n.js', 'app.js'].forEach((f) => vm.runInContext(read(f), sandbox, { filename: f }));
+['js/data/words.js', 'js/data/sentences.js', 'js/data/sentences-extra.js', 'js/data/examples.js', 'js/data/career.js', 'js/data/career-notes.js',
+    'js/data/career-mistakes.js', 'js/data/career-extra.js', 'js/data/reading.js', 'js/data/grammar.js', 'js/data/grammar-more.js',
+    'js/data/placement-bank.js', 'js/data/categories-words.js', 'js/data/categories-more.js', 'js/data/reading-words.js', 'js/i18n.js', 'js/app.js'].forEach((f) => vm.runInContext(read(f), sandbox, { filename: f }));
 
 // 1. The menu has the card
 const card = cards.find((c) => c.dataset.level === 'random10');
