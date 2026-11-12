@@ -2,6 +2,8 @@
 
 A static, offline-capable web app (PWA) for learning English vocabulary, reading, grammar and career phrases. Interface in Hebrew and English. No build step, no dependencies.
 
+![צילום מסך של האפליקציה](docs/screenshot.png)
+
 ## Features
 
 - Vocabulary practice across multiple categories, with example sentences
