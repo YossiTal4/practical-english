@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c1424">
+    <meta name="color-scheme" content="dark light">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Practical English">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Practical English</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>W</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Set the theme before the first paint: saved choice, otherwise the system setting
+        try {
+            var savedTheme = localStorage.getItem('wq_theme');
+            var theme = savedTheme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            document.documentElement.dataset.theme = theme;
+        } catch (e) { /* storage blocked: the CSS default (dark) applies */ }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header id="header">
+            <div id="app-brand">
+                <span id="app-logo" dir="ltr">Aa</span>
+                <h1 id="app-title">Practical English</h1>
+            </div>
+            <div id="header-actions">
+                <button id="lang-btn" class="icon-btn" dir="ltr">English</button>
+                <button id="theme-btn" class="icon-btn" title="מצב בהיר">
+                    <svg class="ico-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="ico-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                    <span class="theme-label">מצב בהיר</span>
+                </button>
+                <button id="fullscreen-btn" class="icon-btn hidden" aria-label="מסך מלא" title="מסך מלא">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3M16 21h3a2 2 0 002-2v-3"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Menu Screen -->
+        <section id="menu-screen" class="screen active">
+            <div id="home-layout">
+                <!-- Main Content -->
+                <div id="home-main">
+                    <!-- Overall progress: learned words and the current level -->
+                    <div id="home-progress" class="home-progress">
+                        <div class="home-progress-row">
+                            <span id="home-level" class="home-progress-level">רמה נוכחית: מתחיל א'</span>
+                            <span id="home-progress-text" class="home-progress-text">0 / 11,127 מילים נלמדו</span>
+                        </div>
+                        <div class="career-bar"><div id="home-progress-fill" class="career-bar-fill"></div></div>
+                    </div>
+
+                    <!-- Home tiles: one tile per area, each opens its own options -->
+                    <div id="home-tiles">
+                        <button class="home-tile" data-tile="vocab">
+                            <span class="home-tile-icon">&#x1F4DA;</span>
+                            <span class="home-tile-name">תרגול אוצר מילים</span>
+                            <span class="home-tile-desc">רמות, קטגוריות, מועדפים וכלים</span>
+                        </button>
+                        <button class="home-tile" data-tile="grammar">
+                            <span class="home-tile-icon">&#x270F;&#xFE0F;</span>
+                            <span class="home-tile-name">דקדוק</span>
+                            <span class="home-tile-desc">הסבר, דוגמאות ותרגילים</span>
+                        </button>
+                        <button class="home-tile" data-tile="reading">
+                            <span class="home-tile-icon">&#x1F4D6;</span>
+                            <span class="home-tile-name">קטעי קריאה</span>
+                            <span class="home-tile-desc">75 קטעים בכל רמה, לחיצה על מילה מציגה פירוש</span>
+                        </button>
+                        <button class="home-tile" data-tile="sentences">
+                            <span class="home-tile-icon">&#x1F9E9;</span>
+                            <span class="home-tile-name">הרכבת משפטים</span>
+                            <span class="home-tile-desc">משפטים מכל הרמות, גוררים את המילים למקום</span>
+                        </button>
+                        <button class="home-tile" data-tile="career">
+                            <span class="home-tile-icon">&#x1F4BC;</span>
+                            <span class="home-tile-name">אנגלית עסקית</span>
+                            <span class="home-tile-desc">10 תחומים, 70 שלבים ברמה בינונית</span>
+                        </button>
+                        <button class="home-tile" data-tile="slang">
+                            <span class="home-tile-icon">&#x1F5E3;&#xFE0F;</span>
+                            <span class="home-tile-name">סלנג אמריקאי</span>
+                            <span class="home-tile-desc">690 ביטויים</span>
+                        </button>
+                        <button class="home-tile" data-tile="placement">
+                            <span class="home-tile-icon">&#x1F3AF;</span>
+                            <span class="home-tile-name">מבחן רמה מלא</span>
+                            <span class="home-tile-desc">אוצר מילים, דקדוק וקריאה, ותוצאה A1 עד C2</span>
+                        </button>
+                    </div>
+
+                    <!-- Vocabulary options: opened from the vocabulary tile -->
+                    <div id="vocab-menu" class="hidden">
+                        <button id="vocab-back" class="secondary-btn">חזרה לראשי</button>
+                    <!-- Smart Practice: the main action, at the top -->
+                    <button class="smart-play-card" id="smart-play-btn">
+                        <span class="smart-play-icon">&#x1F9E0;</span>
+                        <div class="smart-play-text">
+                            <span class="smart-play-title">תרגול חכם</span>
+                            <span class="smart-play-desc">מילים חדשות + מילים שטעית בהן</span>
+                        </div>
+                    </button>
+
+                    <!-- Daily goal and reminder -->
+                    <div id="daily-box">
+                        <div class="daily-row">
+                            <span id="daily-text">היום: 0 מתוך 20 תשובות</span>
+                            <button id="daily-goal-btn" class="secondary-btn">שנה יעד</button>
+                        </div>
+                        <div class="career-bar"><div id="daily-fill" class="career-bar-fill"></div></div>
+                        <div class="daily-row">
+                            <label><input type="checkbox" id="remind-toggle"> תזכורת ביום</label>
+                            <input type="time" id="remind-time" value="19:00">
+                        </div>
+                        <p id="remind-note" class="daily-note"></p>
+                    </div>
+
+                    <h2 class="home-group-title">תרגול לפי רמה</h2>
+                    <div class="level-grid">
+                        <button class="level-card level-card-easy" data-level="1">
+                            <span class="level-card-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1" opacity=".25"/><rect x="17" y="4" width="4" height="17" rx="1" opacity=".25"/></svg></span>
+                            <span class="level-card-name">A1-A2 · קל</span>
+                            <span class="level-card-count">2,405 מילים</span>
+                            <div class="level-card-bar"><div class="level-card-fill" id="home-bar-1"></div></div>
+                            <span class="level-card-mastered" id="home-mastered-1">0 נלמדו</span>
+                        </button>
+                        <button class="level-card level-card-medium" data-level="2">
+                            <span class="level-card-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1" opacity=".25"/></svg></span>
+                            <span class="level-card-name">B1-B2 · בינוני</span>
+                            <span class="level-card-count">5,341 מילים</span>
+                            <div class="level-card-bar"><div class="level-card-fill" id="home-bar-2"></div></div>
+                            <span class="level-card-mastered" id="home-mastered-2">0 נלמדו</span>
+                        </button>
+                        <button class="level-card level-card-hard" data-level="3">
+                            <span class="level-card-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>
+                            <span class="level-card-name">C1-C2 · קשה</span>
+                            <span class="level-card-count">2,691 מילים</span>
+                            <div class="level-card-bar"><div class="level-card-fill" id="home-bar-3"></div></div>
+                            <span class="level-card-mastered" id="home-mastered-3">0 נלמדו</span>
+                        </button>
+                        <button class="level-card level-card-all" data-level="0">
+                            <span class="level-card-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+                            <span class="level-card-name">הכל</span>
+                            <span class="level-card-count">11,127 מילים</span>
+                            <div class="level-card-bar"><div class="level-card-fill" id="home-bar-0"></div></div>
+                            <span class="level-card-mastered" id="home-mastered-0">0 נלמדו</span>
+                        </button>
+                        <button class="level-card level-card-all" data-level="categories">
+                            <span class="level-card-name">לפי קטגוריות</span>
+                            <span class="level-card-count">שמונה עשרה קטגוריות, מאות מילים</span>
+                        </button>
+                        <button class="level-card level-card-fav" id="fav-play-btn" disabled>
+                            <span class="level-card-icon">&#x2B50;</span>
+                            <span class="level-card-name">תרגול מועדפים</span>
+                            <span class="level-card-count" id="fav-count-desc">0 מילים</span>
+                        </button>
+                    </div>
+
+                    <h2 class="home-group-title">משחקים ובחנים</h2>
+                    <div class="level-grid">
+                        <button class="level-card level-card-timed" data-level="timed">
+                            <span class="level-card-name">נגד הזמן</span>
+                            <span class="level-card-count">60 שניות, מדליות על 10, 15 ו-20 תשובות נכונות</span>
+                        </button>
+                        <button class="level-card level-card-all" data-level="random10">
+                            <span class="level-card-name">10 מילים רנדומליות</span>
+                            <span class="level-card-count">10 מילים אקראיות מכל הרמות</span>
+                        </button>
+                        <button class="level-card level-card-test" data-level="test">
+                            <span class="level-card-name">בחן את רמתך</span>
+                            <span class="level-card-count">30 מילים מכל הרמות, עם ציון בסוף</span>
+                        </button>
+                    </div>
+
+                    <!-- Tools: spaced repetition, writing, flashcards, grammar -->
+                    <h2 class="home-group-title">כלי תרגול</h2>
+                    <div class="tool-grid">
+                        <button class="tool-btn" data-tool="srs">
+                            <span class="tool-name">חזרה מרווחת</span>
+                            <span class="tool-desc">מילים בזמן הנכון לזיכרון</span>
+                        </button>
+                        <button class="tool-btn" data-tool="write">
+                            <span class="tool-name">כתיבה פעילה</span>
+                            <span class="tool-desc">כותבים את המילה באנגלית</span>
+                        </button>
+                        <button class="tool-btn" data-tool="cards">
+                            <span class="tool-name">כרטיסיות</span>
+                            <span class="tool-desc">הופכים ונזכרים</span>
+                        </button>
+                        <button class="tool-btn" data-tool="dictation">
+                            <span class="tool-name">הכתבה</span>
+                            <span class="tool-desc">שומעים משפט וכותבים מה שנשמע</span>
+                        </button>
+                    </div>
+                    <p id="tool-note" class="daily-note"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Screen -->
+        <section id="quiz-screen" class="screen">
+            <div id="quiz-layout">
+                <aside id="quiz-sidebar">
+                    <div id="timed-box" class="sidebar-stat hidden">
+                        <span class="sidebar-stat-value" id="timed-time">60</span>
+                        <span class="sidebar-stat-label">שניות</span>
+                        <span class="sidebar-stat-label" id="timed-goal"></span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-value" id="sidebar-score">0</span>
+                        <span class="sidebar-stat-label">ניקוד</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-value" id="sidebar-correct">0</span>
+                        <span class="sidebar-stat-label">נכונות</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-value" id="sidebar-wrong">0</span>
+                        <span class="sidebar-stat-label">שגויות</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-value" id="sidebar-streak">0</span>
+                        <span class="sidebar-stat-label">רצף</span>
+                    </div>
+                </aside>
+                <div id="quiz-main">
+                    <div id="quiz-progress">
+                        <span id="word-counter">שאלה 1</span>
+                    </div>
+                    <div id="word-card">
+                        <button id="speak-btn" title="השמע (S)" aria-label="השמע את המילה">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+                        </button>
+                        <span id="english-word" dir="ltr"></span>
+                    </div>
+                    <div id="answers-container">
+                        <button class="answer-btn" data-index="0"></button>
+                        <button class="answer-btn" data-index="1"></button>
+                        <button class="answer-btn" data-index="2"></button>
+                        <button class="answer-btn" data-index="3"></button>
+                    </div>
+                    <div id="feedback" class="hidden">
+                        <span id="feedback-text"></span>
+                        <span id="feedback-example" class="feedback-example" dir="ltr"></span>
+                        <button id="example-speak" class="secondary-btn hidden">השמע משפט</button>
+                    </div>
+                    <div id="quiz-actions">
+                        <button id="add-fav-btn" class="quiz-action-btn fav-action">&#x2606; הוסף למועדפים</button>
+                        <button id="next-btn" class="quiz-action-btn next-action">הבא &#x2190;</button>
+                        <button id="end-game-btn" class="quiz-action-btn end-action">סיים משחק</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice by category -->
+        <section id="categories-screen" class="screen">
+            <div class="screen-header">
+                <h2>בחר קטגוריה</h2>
+            </div>
+            <div id="category-grid" class="category-grid"></div>
+            <button id="categories-back" class="secondary-btn">חזרה לראשי</button>
+        </section>
+
+        <!-- Reading passages -->
+        <section id="reading-screen" class="screen">
+            <div class="screen-header">
+                <h2>קטעי קריאה</h2>
+            </div>
+            <div id="reading-levels" class="sentence-levels">
+                <button class="secondary-btn reading-level-btn" data-rlevel="1">A1-A2 · קל</button>
+                <button class="secondary-btn reading-level-btn" data-rlevel="2">B1-B2 · בינוני</button>
+                <button class="secondary-btn reading-level-btn" data-rlevel="3">C1-C2 · קשה</button>
+            </div>
+            <div id="reading-list" class="reading-list hidden"></div>
+            <div id="reading-view" class="reading-view hidden">
+                <button id="reading-back" class="secondary-btn">חזרה לרשימה</button>
+                <h3 id="reading-title"></h3>
+                <button id="reading-speak" class="secondary-btn">השמע קטע</button>
+                <div id="reading-text" class="reading-text"></div>
+                <div id="reading-popup" class="reading-popup hidden" role="status">
+                    <span id="reading-popup-text" class="reading-popup-text" dir="ltr"></span>
+                    <button id="reading-popup-close" class="reading-popup-close" aria-label="סגור">&#x2715;</button>
+                </div>
+                <div id="reading-questions"></div>
+                <div id="reading-score" class="reading-score"></div>
+            </div>
+        </section>
+
+        <!-- Active writing -->
+        <section id="write-screen" class="screen">
+            <div class="screen-header">
+                <h2>כתיבה פעילה</h2>
+            </div>
+            <div id="write-levels" class="sentence-levels">
+                <button class="secondary-btn write-level-btn" data-wlevel="1">A1-A2 · קל</button>
+                <button class="secondary-btn write-level-btn" data-wlevel="2">B1-B2 · בינוני</button>
+                <button class="secondary-btn write-level-btn" data-wlevel="3">C1-C2 · קשה</button>
+                <button class="secondary-btn write-level-btn" data-wlevel="0">הכל</button>
+            </div>
+            <div id="write-game" class="sentence-card hidden">
+                <div id="write-hebrew" class="write-hebrew"></div>
+                <input id="write-input" class="write-input" dir="ltr" autocomplete="off" aria-label="כתבו את המילה באנגלית" placeholder="כתבו את המילה באנגלית">
+                <div id="write-hint" class="write-hint" dir="ltr"></div>
+                <div class="sentence-actions">
+                    <button id="write-check" class="primary-btn">בדוק</button>
+                    <button id="write-hint-btn" class="secondary-btn">רמז</button>
+                    <button id="write-speak" class="secondary-btn hidden">השמע</button>
+                    <button id="write-next" class="secondary-btn hidden">הבא</button>
+                    <button id="write-back" class="secondary-btn">חזרה לרמות</button>
+                </div>
+                <div id="write-feedback" class="sentence-explain"></div>
+            </div>
+        </section>
+
+        <!-- Flashcards -->
+        <section id="cards-screen" class="screen">
+            <div class="screen-header">
+                <h2>כרטיסיות</h2>
+            </div>
+            <div id="cards-levels" class="sentence-levels">
+                <button class="secondary-btn cards-level-btn" data-clevel="srs">לחזרה היום</button>
+                <button class="secondary-btn cards-level-btn" data-clevel="1">A1-A2 · קל</button>
+                <button class="secondary-btn cards-level-btn" data-clevel="2">B1-B2 · בינוני</button>
+                <button class="secondary-btn cards-level-btn" data-clevel="3">C1-C2 · קשה</button>
+                <button class="secondary-btn cards-level-btn" data-clevel="0">הכל</button>
+            </div>
+            <div id="cards-game" class="sentence-card hidden">
+                <button id="card-face" class="card-face">
+                    <span id="card-front" dir="ltr"></span>
+                    <span id="card-back"></span>
+                </button>
+                <div class="sentence-actions">
+                    <button id="card-dont" class="secondary-btn hidden">לא ידעתי</button>
+                    <button id="card-know" class="primary-btn hidden">ידעתי</button>
+                    <button id="card-speak" class="secondary-btn">השמע</button>
+                    <button id="card-back-levels" class="secondary-btn">חזרה לרמות</button>
+                </div>
+                <div id="card-progress" class="sentence-explain"></div>
+            </div>
+        </section>
+
+        <!-- Full placement test -->
+        <section id="placement-screen" class="screen">
+            <div class="screen-header">
+                <h2>מבחן רמה מלא</h2>
+            </div>
+            <div id="pl-intro" class="reading-view">
+                <p>המבחן כולל 40 שאלות: 10 של אוצר מילים, 10 של דקדוק, 10 של השלמת משפטים ו-10 של קריאה על שני קטעים (בינוני וקשה). הוא לוקח כ-20 דקות ומסיים בקביעת הרמה שלכם, מ-B1 ועד C2, עם הנחיות להמשך.</p>
+                <p id="pl-last" class="daily-note"></p>
+                <p id="pl-draw-note" class="daily-note">מאגר של 350 שאלות. כל מבחן מוגרל מחדש.</p>
+                <button id="pl-draw" class="secondary-btn">הגרל מבחן חדש</button>
+                <button id="pl-start" class="primary-btn">התחל מבחן</button>
+                <button id="pl-back" class="secondary-btn">חזרה לראשי</button>
+            </div>
+            <div id="pl-game" class="reading-view hidden">
+                <p id="pl-progress" class="daily-note"></p>
+                <h3 id="pl-section"></h3>
+                <div id="pl-passage" class="reading-text hidden"></div>
+                <p id="pl-question" class="grammar-explain"></p>
+                <div id="pl-options"></div>
+                <p id="pl-feedback" class="reading-score"></p>
+                <button id="pl-next" class="primary-btn hidden">הבא</button>
+            </div>
+            <div id="pl-result" class="reading-view hidden">
+                <h3 id="pl-level"></h3>
+                <p id="pl-desc"></p>
+                <p id="pl-scores" class="daily-note"></p>
+                <h3>הנחיות להמשך</h3>
+                <ul id="pl-steps" class="placement-steps"></ul>
+                <button id="pl-again" class="secondary-btn">מבחן חוזר</button>
+                <button id="pl-back-result" class="secondary-btn">חזרה לראשי</button>
+            </div>
+        </section>
+
+        <!-- Dictation -->
+        <section id="dictation-screen" class="screen">
+            <div class="screen-header">
+                <h2>הכתבה</h2>
+            </div>
+            <div id="dict-levels" class="sentence-levels">
+                <button class="secondary-btn dict-level-btn" data-dlevel="srs">לחזרה היום</button>
+                <button class="secondary-btn dict-level-btn" data-dlevel="1">A1-A2 · קל</button>
+                <button class="secondary-btn dict-level-btn" data-dlevel="2">B1-B2 · בינוני</button>
+                <button class="secondary-btn dict-level-btn" data-dlevel="3">C1-C2 · קשה</button>
+                <button class="secondary-btn dict-level-btn" data-dlevel="all">הכל</button>
+            </div>
+            <div id="dict-game" class="sentence-card hidden">
+                <p id="dict-count" class="daily-note"></p>
+                <div class="sentence-actions">
+                    <button id="dict-play" class="primary-btn">השמע</button>
+                    <button id="dict-slow" class="secondary-btn">השמע לאט</button>
+                </div>
+                <textarea id="dict-input" class="write-input" dir="ltr" rows="2" aria-label="כתבו את המשפט כפי ששמעתם" placeholder="כתבו את המשפט כפי ששמעתם"></textarea>
+                <div class="sentence-actions">
+                    <button id="dict-check" class="primary-btn">בדוק</button>
+                    <button id="dict-next" class="secondary-btn hidden">הבא</button>
+                    <button id="dict-back" class="secondary-btn">חזרה לרמות</button>
+                </div>
+                <div id="dict-feedback" class="sentence-explain"></div>
+                <div id="dict-correct" class="sentence-explain" dir="ltr"></div>
+            </div>
+        </section>
+
+        <!-- Grammar -->
+        <section id="grammar-screen" class="screen">
+            <div class="screen-header">
+                <h2>דקדוק</h2>
+            </div>
+            <div id="grammar-list" class="reading-list"></div>
+            <div id="grammar-detail" class="reading-view hidden">
+                <button id="grammar-back" class="secondary-btn">חזרה לנושאים</button>
+                <h3 id="grammar-title"></h3>
+                <p id="grammar-explain" class="grammar-explain"></p>
+                <p id="grammar-pattern" class="grammar-pattern" dir="ltr"></p>
+                <p id="grammar-tip" class="grammar-tip"></p>
+                <div id="grammar-examples"></div>
+                <h4>תרגול</h4>
+                <div id="grammar-exercises"></div>
+            </div>
+        </section>
+
+        <!-- Business English track: stage map -->
+        <section id="career-screen" class="screen">
+            <div class="screen-header">
+                <h2>אנגלית עסקית</h2>
+            </div>
+            <div id="career-map" class="career-map"></div>
+        </section>
+
+        <!-- Sentence building screen -->
+        <section id="sentence-screen" class="screen">
+            <div class="screen-header">
+                <h2>הרכבת משפטים</h2>
+            </div>
+            <div id="sentence-levels" class="sentence-levels">
+                <p class="sentence-levels-title">סוג תרגיל</p>
+                <button class="primary-btn type-btn" data-type="mixed">מגוון תרגילים</button>
+                <button class="secondary-btn type-btn" data-type="arrange">סידור מילים</button>
+                <button class="secondary-btn type-btn" data-type="blank">השלמת חסר</button>
+                <p class="sentence-levels-title">בחר רמה</p>
+                <button class="secondary-btn level-btn" data-level="1">A1-A2 · קל</button>
+                <button class="secondary-btn level-btn" data-level="2">B1-B2 · בינוני</button>
+                <button class="secondary-btn level-btn" data-level="3">C1-C2 · קשה</button>
+                <button class="secondary-btn level-btn" data-level="all">מעורבב</button>
+                <button class="secondary-btn level-btn" data-level="srs">לחזרה היום</button>
+            </div>
+            <div id="sentence-game" class="sentence-card hidden">
+                <div id="career-note" class="career-note hidden"></div>
+                <details id="career-dialogue" class="career-note hidden">
+                    <summary>דיאלוג לדוגמה</summary>
+                    <div id="career-dialogue-body"></div>
+                </details>
+                <div id="sentence-prompt"></div>
+                <div id="sentence-answer" class="tile-row" aria-label="התשובה שלך"></div>
+                <div id="sentence-bank" class="tile-row" aria-label="מילים לבחירה"></div>
+                <div id="sentence-blank" class="sentence-blank hidden"></div>
+                <div id="sentence-choices" class="sentence-choices hidden"></div>
+                <div id="sentence-feedback"></div>
+                <div id="sentence-explain" class="sentence-explain"></div>
+                <div class="sentence-actions">
+                    <button id="sentence-check" class="primary-btn">בדוק</button>
+                    <button id="sentence-reveal" class="secondary-btn">הצג תשובה</button>
+                    <button id="sentence-next" class="secondary-btn hidden">הבא</button>
+                    <button id="sentence-end" class="secondary-btn">סיים משחק</button>
+                    <button id="sentence-speak" class="secondary-btn hidden">השמע משפט</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Screen -->
+        <section id="results-screen" class="screen">
+            <div class="results-card">
+                <h2>סיום סבב!</h2>
+                <div id="results-score" class="results-big-number"></div>
+                <div id="results-details"></div>
+                <div id="results-mistakes" class="results-mistakes hidden"></div>
+                <div class="results-actions">
+                    <button id="play-again-btn" class="primary-btn">שחק שוב</button>
+                    <button id="review-mistakes-btn" class="secondary-btn">חזור על הטעויות</button>
+                    <button id="back-to-menu-btn" class="secondary-btn">תפריט ראשי</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Favorites Screen -->
+        <section id="favorites-screen" class="screen">
+            <div class="screen-header">
+                <h2>מילים מועדפות</h2>
+                <div class="fav-actions">
+                    <button id="practice-favs-btn" class="small-btn" disabled>תרגול מועדפים</button>
+                    <button id="export-favs-btn" class="small-btn">ייצוא</button>
+                </div>
+            </div>
+            <input type="text" id="fav-search" placeholder="חפש מילה..." dir="auto">
+            <div id="favorites-list"></div>
+            <p id="no-favs-message" class="empty-message">
+                עדיין לא הוספת מילים מועדפות.<br>
+                במהלך המשחק, לחץ על הכוכב כדי לשמור מילים.
+            </p>
+        </section>
+
+        <!-- Stats Screen -->
+        <section id="stats-screen" class="screen">
+            <h2>סטטיסטיקות</h2>
+            <div id="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">שאלות שנענו</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-correct">0%</div>
+                    <div class="stat-label">אחוז הצלחה</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-streak">0</div>
+                    <div class="stat-label">רצף שיא</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-mastered">0</div>
+                    <div class="stat-label">מילים שנלמדו</div>
+                </div>
+            </div>
+            <h3>תשובות בשבוע האחרון</h3>
+            <div id="week-chart" class="week-chart"></div>
+            <div id="level-stats">
+                <h3>לפי רמת קושי</h3>
+                <div class="level-stat-row">
+                    <span class="level-stat-label">A1-A2 · קל</span>
+                    <div class="level-stat-bar"><div id="level1-bar" class="level-stat-fill"></div></div>
+                    <span class="level-stat-value" id="level1-stat">0/0</span>
+                </div>
+                <div class="level-stat-row">
+                    <span class="level-stat-label">B1-B2 · בינוני</span>
+                    <div class="level-stat-bar"><div id="level2-bar" class="level-stat-fill"></div></div>
+                    <span class="level-stat-value" id="level2-stat">0/0</span>
+                </div>
+                <div class="level-stat-row">
+                    <span class="level-stat-label">C1-C2 · קשה</span>
+                    <div class="level-stat-bar"><div id="level3-bar" class="level-stat-fill"></div></div>
+                    <span class="level-stat-value" id="level3-stat">0/0</span>
+                </div>
+            </div>
+            <div id="sync-box">
+                <h3>העברת התקדמות בין מכשירים</h3>
+                <p class="daily-note">ייצוא יוצר קובץ עם כל ההתקדמות. בייבוא במכשיר השני בוחרים את הקובץ הזה.</p>
+                <div class="sentence-actions">
+                    <button id="export-btn" class="secondary-btn">ייצוא קובץ התקדמות</button>
+                    <button id="import-btn" class="secondary-btn">ייבוא קובץ התקדמות</button>
+                </div>
+                <input type="file" id="import-file" accept="application/json" class="hidden">
+            </div>
+            <button id="reset-stats-btn" class="danger-btn">אפס סטטיסטיקות</button>
+        </section>
+
+        <div id="toast" class="toast hidden" role="status"></div>
+
+        <!-- Bottom Navigation -->
+        <nav id="bottom-nav">
+            <button class="nav-btn active" data-screen="menu">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span>ראשי</span>
+            </button>
+            <button class="nav-btn" data-screen="favorites">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>מועדפים</span>
+            </button>
+            <button class="nav-btn" data-screen="stats">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                <span>סטטיסטיקות</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="sentences.js"></script>
+    <script src="sentences-extra.js"></script>
+    <script src="examples.js"></script>
+    <script src="career.js"></script>
+    <script src="career-notes.js"></script>
+    <script src="career-mistakes.js"></script>
+    <script src="career-extra.js"></script>
+    <script src="reading.js"></script>
+    <script src="reading-extra-1.js"></script>
+    <script src="reading-extra-2.js"></script>
+    <script src="reading-extra-3.js"></script>
+    <script src="grammar.js"></script>
+    <script src="grammar-more.js"></script>
+    <script src="placement-bank.js"></script>
+    <script src="categories-words.js"></script>
+    <script src="categories-more.js"></script>
+    <script src="reading-words.js"></script>
+    <script src="i18n.js"></script>
+    <script src="app.js"></script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+    </script>
+</body>
+</html>
