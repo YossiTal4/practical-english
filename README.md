@@ -2,6 +2,17 @@
 
 A static, offline-capable web app (PWA) for learning English vocabulary, reading, grammar and career phrases. Interface in Hebrew and English. No build step, no dependencies.
 
+## Features
+
+- Vocabulary practice across multiple categories, with example sentences
+- Reading comprehension exercises at several levels
+- Grammar lessons and practice questions
+- Career-focused phrases and common interview mistakes
+- Hebrew/English interface toggle
+- Works offline (PWA) — install on your phone or desktop
+
+Built for Hebrew-speaking adults preparing for English-language work environments.
+
 ## Run locally
 
 ```
